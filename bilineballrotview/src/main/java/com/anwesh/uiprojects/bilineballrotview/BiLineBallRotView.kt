@@ -224,4 +224,13 @@ class BiLineBallRotView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BiLineBallRotView {
+            val view : BiLineBallRotView = BiLineBallRotView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
