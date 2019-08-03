@@ -18,7 +18,7 @@ val parts : Int = 2
 val scGap : Float = 0.05f
 val scDiv : Double = 0.51
 val strokeFactor : Int = 90
-val sizeFactor : Float = 90f
+val sizeFactor : Float = 2.9f
 val foreColor : Int = Color.parseColor("#6A1B9A")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val rFactor : Float = 2.9f
@@ -46,8 +46,11 @@ fun Canvas.drawBiLineBall(i : Int, sc : Float, size : Float, paint : Paint) {
 
 fun Canvas.drawBiLineBallParts(sc1 : Float, sc2 : Float, size : Float, paint : Paint) {
     for (j in 0..(parts - 1)) {
+        val sf : Float = 1f - 2 * j
+        val sc : Float = sc2.divideScale(j, parts)
         save()
-        rotate(90f * (1f - 2 * j) * sc2.divideScale(j, parts))
+        translate(-(size / rFactor) * sc * sf, 0f)
+        rotate(90f * sf * sc)
         drawBiLineBall(j, sc1, size, paint)
         restore()
     }
@@ -230,7 +233,7 @@ class BiLineBallRotView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : BiLineBallRotView {
             val view : BiLineBallRotView = BiLineBallRotView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
