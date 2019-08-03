@@ -20,7 +20,7 @@ val scDiv : Double = 0.51
 val strokeFactor : Int = 90
 val sizeFactor : Float = 90f
 val foreColor : Int = Color.parseColor("#6A1B9A")
-val strokeColor : Int = Color.parseColor("#BDBDBD")
+val backColor : Int = Color.parseColor("#BDBDBD")
 val rFactor : Float = 2.9f
 
 fun Int.inverse() : Float = 1f / this
@@ -199,6 +199,28 @@ class BiLineBallRotView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : BiLineBallRotView) {
+
+        private val animator : Animator = Animator(view)
+        private val blbr : BiLineBallRot = BiLineBallRot(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            blbr.draw(canvas, paint)
+            animator.animate {
+                blbr.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            blbr.startUpdating {
+                animator.start()
+            }
         }
     }
 }
